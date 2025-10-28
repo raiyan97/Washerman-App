@@ -25,7 +25,11 @@ const Colors = {
   lightGrey: '#7b8999',
   solidAppColor: '#1c4697',
   naviBlue:'#418AEC',
-  logoTExt:"#61bde8"
+  logoTExt:"#61bde8",
+  darkGrey:"#656565",
+  trafficGreen:"#07eb0b",
+  DeliverdColor:"#D9D9D9",
+  minusPlusButton:"#F4F4F4"
 
 }
 export default Colors
