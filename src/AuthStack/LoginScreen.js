@@ -1,241 +1,337 @@
+import React, { useEffect, useState } from 'react';
 import {
+  StyleSheet,
   ImageBackground,
   StatusBar,
-  StyleSheet,
-  Text,
+  ScrollView,
+  RefreshControl,
   View,
+  Text,
+  TextInput,
   Image,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
 } from 'react-native';
-import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import TextInputCom from '../Components/TextInputCom';
-import { useNavigation } from '@react-navigation/native';
-import HomeScreen from '../Screens/Home/HomeScreen';
 import Colors from '../Styles/Colors';
 
-const LoginScreen = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const SignUp = () => {
   const navigation = useNavigation();
+  const [refreshing, setRefreshing] = useState(false);
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
+  const [city, setCity] = useState('');
+  const [password, setPassword] = useState('');
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    setTimeout(() => setRefreshing(false), 1000);
+  };
+
+  // ✅ Listen for keyboard events (to fix bottom space issue)
+  useEffect(() => {
+    const showSub = Keyboard.addListener('keyboardDidShow', () =>
+      setKeyboardVisible(true),
+    );
+    const hideSub = Keyboard.addListener('keyboardDidHide', () =>
+      setKeyboardVisible(false),
+    );
+
+    return () => {
+      showSub.remove();
+      hideSub.remove();
+    };
+  }, []);
+
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: 'white',
-      }}
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 20 : 0}
     >
-      <StatusBar
-        barStyle="dark-content" // dark text for light backgrounds
-        translucent
-        backgroundColor="transparent"
-      />
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+        <StatusBar
+          barStyle="dark-content"
+          translucent
+          backgroundColor="transparent"
+        />
 
-      <ImageBackground
-        source={{ uri: 'splash' }}
-        style={{ flex: 1 }}
-        resizeMode={'stretch'}
-      >
-        <View
-          style={{
-            flex: 0.315,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: Colors.white,
-            marginTop: hp('15'),
+        <ScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+            paddingBottom: keyboardVisible ? 0 : 0, // 👈 No gap after keyboard hides
           }}
+          keyboardShouldPersistTaps="handled"
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              colors={['#2A72B6', '#203B88']}
+              progressBackgroundColor={'grey'}
+              tintColor={'green'}
+            />
+          }
         >
-          <Image
-            source={{ uri: 'washlogo' }}
-            style={{ height: hp('20'), width: wp('20') }}
-            resizeMode={'cover'}
-          ></Image>
-        </View>
-        <View style={{ flex: 0.55, backgroundColor: Colors.white }}>
-          <View style={styles.LoginConatiner}>
-            <Text style={styles.LoginText}>Login</Text>
-          </View>
-          <View style={styles.EmailContain}>
-            <Text style={styles.EmailText}>Email</Text>
-          </View>
-          <TextInputCom
-            placeholder="Enter your Email"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-          />
-          <View style={styles.EmailContain}>
-            <Text style={[styles.EmailText, { color:Colors.naviBlue }]}>Password</Text>
-          </View>
-          <TextInputCom
-            placeholder="Enter your Password"
-            value={password}
-            onChangeText={setPassword}
-            keyboardType="email-address"
-          />
-          <View style={styles.RegisterContainer}>
-            <Text style={styles.newText}>
-              New Here ?{' '}
-              <Text
-                style={{ fontWeight: '500' }}
-                onPress={() => navigation.navigate('SignUpScreen')}
+          {/* ✅ Background inside ScrollView */}
+          <ImageBackground
+            source={{ uri: 'splash' }}
+            style={{ flex: 1 }}
+            resizeMode="stretch"
+          >
+            <View style={{ marginHorizontal: wp('5') }}>
+              <View
+                style={{
+                  height: hp('20'),
+                  borderRadius: wp('50'),
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: hp('15'),
+                }}
               >
-                Register
-              </Text>
-            </Text>
-            {/* <Text style={styles.RegisterText}>? Register </Text> */}
-            <Text style={styles.passswordText}>Forgot Password ? </Text>
-          </View>
-        </View>
-        <View
-          style={{
-            flex: 0.135,
-            justifyContent: 'center',
-            backgroundColor: 'white',
-            marginBottom: hp('15'),
-          }}
-        >
-          <View style={styles.buttonContaioner}>
-            <View style={styles.gogleContainer}>
-              <Image style={styles.googleIMG} source={{ uri: 'google' }} />
-            </View>
-            <View style={styles.fbContainer}>
-              <Image style={styles.fbIMG} source={{ uri: 'fbicon' }} />
-            </View>
+                <Image
+                  source={{ uri: 'washlogo' }}
+                  style={{
+                    height: hp('20'),
+                    width: wp('40'),
+                    borderRadius: wp('50'),
+                  }}
+                  resizeMode="cover"
+                />
+              </View>
 
-            <TouchableOpacity
-              style={styles.lgnContainer}
-              onPress={() => navigation.navigate('HomeScreen')}
-            >
-              <Text style={styles.logantext}>Login</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </ImageBackground>
-    </SafeAreaView>
+              <View
+                style={{
+                  justifyContent: 'center',
+                  marginTop: hp('1'),
+                  marginBottom: hp('1'),
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: hp('2.5'),
+                    color: Colors.naviBlue,
+                    fontFamily: 'Poppins-Medium',
+                    letterSpacing: 0.5,
+                  }}
+                >
+                  Login
+                </Text>
+              </View>
+
+              {/* Email */}
+              <View style={{ marginTop: hp('2'), marginBottom: hp('0.5') }}>
+                <Text
+                  style={{
+                    fontSize: hp('1.75'),
+                    color: Colors.naviBlue,
+                    fontFamily: 'Poppins-Regular',
+                  }}
+                >
+                  Email
+                </Text>
+              </View>
+
+              <View style={{ justifyContent: 'center', marginTop: hp('0.5') }}>
+                <TextInput
+                  placeholder="Enter your name"
+                  value={name}
+                  onChangeText={setName}
+                  style={styles.input}
+                />
+              </View>
+
+              {/* Password */}
+              <View style={{ marginTop: hp('0'), marginBottom: hp('0.5') }}>
+                <Text
+                  style={{
+                    fontSize: hp('1.75'),
+                    color: Colors.naviBlue,
+                    fontFamily: 'Poppins-Regular',
+                  }}
+                >
+                  Password
+                </Text>
+              </View>
+
+              <View style={{ justifyContent: 'center', marginTop: hp('0.5') }}>
+                <TextInput
+                  placeholder="Enter your Password"
+                  value={password}
+                  onChangeText={setPassword}
+                  style={styles.input}
+                  secureTextEntry
+                />
+              </View>
+
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  backgroundColor: 'white',
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: hp('1.9'),
+                    color: 'black',
+                    fontFamily: 'Poppins-Regular',
+                  }}
+                >
+                  New Here ?{' '}
+                  <Text
+                  onPress={()=> navigation.navigate("SignUpScreen")}
+                    style={{
+                      fontSize: hp('2'),
+                      color: 'black',
+                      fontFamily: 'Poppins-SemiBold',
+                    }}
+                  >
+                    Register
+                  </Text>
+                </Text>
+
+                <Text
+                  style={{
+                    fontSize: hp('1.9'),
+                    color: 'black',
+                    fontFamily: 'Poppins-Medium',
+                  }}
+                >
+                  Forgot password ?
+                </Text>
+              </View>
+
+              <View
+                style={{
+                  height: hp('6'),
+                  flexDirection: 'row',
+                  backgroundColor:Colors.white,
+                  marginTop: hp('5'),
+                }}
+              >
+                <View style={{ flex: 0.012, backgroundColor: 'white' }}></View>
+
+                <View
+                  style={{
+                    flex: 0.13,
+                    backgroundColor: 'white',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: wp('1'),
+
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 2,
+
+                    elevation: 2,
+                  }}
+                >
+                  <Image
+                    source={{ uri: 'google' }}
+                    style={{
+                      width: wp('6'),
+                      height: hp('3'),
+                      resizeMode: 'cover',
+                    }}
+                  />
+                </View>
+                <View style={{ flex: 0.09 }}></View>
+
+                <View
+                  style={{
+                    flex: 0.13,
+                    backgroundColor: Colors.white,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: wp('1'),
+
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84,
+
+                    elevation: 2,
+                  }}
+                >
+                  <Image
+                    source={{ uri: 'fbicon' }}
+                    style={{
+                      width: wp('6'),
+                      height: hp('3'),
+                      resizeMode: 'cover',
+                    }}
+                  />
+                </View>
+                <View
+                  style={{
+                    flex: 0.31,
+                    backgroundColor: 'white',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: wp('2'),
+                  }}
+                ></View>
+
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('HomeScreen')}
+                  style={{
+                    flex: 0.32,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: Colors.white,
+
+                    borderRadius: wp('2'),
+
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84,
+
+                    elevation: 2,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: hp('2'),
+                      color: Colors.black,
+                      fontFamily: 'Poppins-Medium',
+                    }}
+                  >
+                    Login
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </ImageBackground>
+        </ScrollView>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
 
-export default LoginScreen;
+export default SignUp;
 
 const styles = StyleSheet.create({
-  LoginConatiner: {
-    paddingHorizontal: wp('5'),
-  },
-  LoginText: {
-    fontSize: hp('3.1'),
-    fontWeight: '500',
-    color:Colors.naviBlue
-  },
-  EmailContain: {
-    marginTop: hp('2.8'),
-    marginHorizontal: wp('5'),
-  },
-  EmailText: {
-    fontSize: hp('1.9'),
-    color:Colors.naviBlue,
-  },
-  RegisterContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: hp('2.9'),
-    marginTop: hp('2.5'),
-  },
-  RegisterText: {
-    fontSize: hp('2'),
-    color: '#000',
-    fontWeight: '500',
-    marginRight: hp(5),
-  },
-  newText: {
-    fontSize: hp('2'),
-    color: Colors.black,
-
-  },
-  passswordText: {
-    fontSize: hp('1.8'),
-    color: Colors.black,
-    fontWeight: '500',
-    // bottom: hp('1'),
-  },
-  buttonContaioner: {
-    paddingHorizontal: hp('3'),
-    flexDirection: 'row',
-    justifyContent: 'space-between', // center items together
-    alignItems: 'center', // vertical align
-  },
-  gogleContainer: {
-    height: hp('6'),
-    width: wp('12'),
-    borderRadius: wp('3'),
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop:hp('2'),
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-    shadowOpacity: wp('10'),
-    shadowRadius: wp('10'),
-    elevation: 10,
-    backgroundColor: 'white',
-  },
-  googleIMG: {
-    width: wp('8'),
-    height: hp('3'),
-    resizeMode: 'contain',
-    borderRadius: wp('2'),
-  },
-  fbContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: hp('6'),
-    width: wp('12'),
-    marginTop:hp('2'),
-    borderRadius: wp('3'),
-    marginRight: hp('17'),
-    shadowColor:Colors.black,
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-    shadowOpacity: wp('10'),
-    shadowRadius: wp('10'),
-    elevation: 10,
-    backgroundColor: 'white',
-  },
-  fbIMG: {
-    width: wp('8'),
-    height: hp('3.5'),
-    resizeMode: 'contain',
-    borderRadius: wp('2'),
-  },
-  lgnContainer: {
-    width: wp('21'),
-    height: hp('6'),
-    justifyContent: 'center',
-    borderRadius: wp('2'),
-    marginTop:hp('2'),
-    shadowColor: Colors.black,
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-    shadowOpacity: wp('10'),
-    shadowRadius: wp('10'),
-    elevation: 10,
-    backgroundColor:Colors.white,
-  },
-
-  logantext: {
-     fontSize: hp(1.9),
-    fontWeight: '500',
-    color: Colors.black,
-    alignSelf: 'center',
+  input: {
+    borderWidth: 1,
+    borderColor:Colors.naviBlue,
+    borderRadius: wp('2.5%'),
+    paddingHorizontal: wp('4%'),
+    paddingVertical: hp('1.5%'),
+    backgroundColor: '#fff',
+    marginBottom: hp('2%'),
+    fontSize: hp('2%'),
   },
 });

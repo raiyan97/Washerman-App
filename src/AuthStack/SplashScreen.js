@@ -66,7 +66,7 @@ const SplashScreen = () => {
               color: Colors.logoTExt,
             }}
           >
-            WasherMan
+            DHOBI-WALA
           </Text>
 
           <View style={{}}></View>

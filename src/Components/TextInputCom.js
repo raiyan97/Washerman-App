@@ -6,12 +6,12 @@ import {
 } from 'react-native-responsive-screen';
 
 const TextInputCom = ({
-  placeholder = 'Enter Text',
+  placeholder,
   onChnageText,
   value,
-  keyboardType = 'default',
-  secureTextEntry = false,
-  autoCapitalize = 'none',
+  keyboardType,
+  secureTextEntry,
+  autoCapitalize,
   style,
 }) => {
   return (
@@ -35,15 +35,11 @@ export default TextInputCom;
 const styles = StyleSheet.create({
   TextField: {
     height: hp('6'),
-    width: wp('92'),
-    marginTop: wp('2'),
-    alignSelf: 'flex-start',
+    width: wp('90'),
     borderColor: '#418AEC',
     borderWidth: 1,
     borderWidthColor: '#418AEC',
-    borderRadius: hp('1'),
-    marginHorizontal: wp('4'),
-    paddingHorizontal: wp('5'),
+    borderRadius: wp('1'),
     backgroundColor: '#fff',
     fontSize: wp('4'),
   },
