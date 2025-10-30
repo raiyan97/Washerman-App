@@ -9,7 +9,9 @@ const initialState = {
   isLoading: false,
 };
 
-export const LoginAction = createAsyncThunk('Login', async values => {
+export const LoginAction = createAsyncThunk('Login', async ({values}) => {
+  console.log("values",values);
+  
   return axios
     .post(`${APIS.LoginAPI}`, values, {})
     .then(response => response.data);
@@ -27,8 +29,8 @@ const LoginSlice = createSlice({
     });
     builder.addCase(LoginAction.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.success = action.payload.success;
-      state.message = action.payload.message;
+      // state.success = action.payload.success;
+      // state.message = action.payload.message;
       state.userData = action.payload.data;
     });
   },

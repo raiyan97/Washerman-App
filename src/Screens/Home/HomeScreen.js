@@ -119,7 +119,7 @@ const HomeScreen = () => {
         <Image
           source={item?.iconName}
           style={{ height: hp('7.5'), width: wp('15') }}
-          resizeMode="cover"
+          resizeMode="contain"
         />
       </View>
 
@@ -389,7 +389,7 @@ const HomeScreen = () => {
                 numberOfLines={2}
                 ellipsizeMode="tail"
                 style={{
-                  fontSize: hp('1.75'),
+                  fontSize: hp('1.5'),
                   fontFamily: 'Poppins-SemiBold',
                   color: Colors.white,
                   paddingHorizontal: wp('2'),

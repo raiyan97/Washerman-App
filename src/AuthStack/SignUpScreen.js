@@ -248,7 +248,8 @@ const SignUp = () => {
 
                 <View
                   style={{
-                    flex: 0.13,
+ height:hp('5'),
+ width:wp('10'),
                     backgroundColor: 'white',
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -265,8 +266,8 @@ const SignUp = () => {
                   <Image
                     source={{ uri: 'google' }}
                     style={{
-                      width: wp('6'),
-                      height: hp('3'),
+                      width: wp('10'),
+                      height: hp('5'),
                       resizeMode: 'cover',
                     }}
                   />

@@ -21,8 +21,11 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Colors from '../Styles/Colors';
+import { useDispatch } from 'react-redux';
+import { LoginAction } from '../ReduxToolkit/Slices/LoginProfileSlice';
 
 const SignUp = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const [refreshing, setRefreshing] = useState(false);
   const [keyboardVisible, setKeyboardVisible] = useState(false);
@@ -33,6 +36,31 @@ const SignUp = () => {
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
   const [password, setPassword] = useState('');
+// navigation.navigate('HomeScreen')
+
+
+const onChangeEmail = (val) => {
+  setEmail(val)
+}
+
+const onChangePassword = (val) => {
+  setPassword(val)
+}
+console.log("email",email);
+console.log("password",password);
+
+
+
+const onPressLoginBtn = () => {
+  console.log("onPressLoginBtn");
+  
+  dispatch(LoginAction({
+    values:{
+      email:email,
+      password:password
+    }
+  }))
+}
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -89,7 +117,7 @@ const SignUp = () => {
             style={{ flex: 1 }}
             resizeMode="stretch"
           >
-            <View style={{ marginHorizontal: wp('5') }}>
+            <View style={{ marginHorizontal: wp('5'), backgroundColor: '' }}>
               <View
                 style={{
                   height: hp('20'),
@@ -144,9 +172,9 @@ const SignUp = () => {
 
               <View style={{ justifyContent: 'center', marginTop: hp('0.5') }}>
                 <TextInput
-                  placeholder="Enter your name"
-                  value={name}
-                  onChangeText={setName}
+                  placeholder="Enter your Email"
+                  value={email}
+                  onChangeText={onChangeEmail}
                   style={styles.input}
                 />
               </View>
@@ -168,7 +196,7 @@ const SignUp = () => {
                 <TextInput
                   placeholder="Enter your Password"
                   value={password}
-                  onChangeText={setPassword}
+                  onChangeText={onChangePassword}
                   style={styles.input}
                   secureTextEntry
                 />
@@ -190,7 +218,7 @@ const SignUp = () => {
                 >
                   New Here ?{' '}
                   <Text
-                  onPress={()=> navigation.navigate("SignUpScreen")}
+                    onPress={() => navigation.navigate('SignUpScreen')}
                     style={{
                       fontSize: hp('2'),
                       color: 'black',
@@ -216,15 +244,16 @@ const SignUp = () => {
                 style={{
                   height: hp('6'),
                   flexDirection: 'row',
-                  backgroundColor:Colors.white,
-                  marginTop: hp('5'),
+                  backgroundColor: Colors.white,
+                  marginTop: hp('2'),
                 }}
               >
                 <View style={{ flex: 0.012, backgroundColor: 'white' }}></View>
 
                 <View
                   style={{
-                    flex: 0.13,
+                    height: hp('5'),
+                    width: wp('10'),
                     backgroundColor: 'white',
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -241,8 +270,8 @@ const SignUp = () => {
                   <Image
                     source={{ uri: 'google' }}
                     style={{
-                      width: wp('6'),
-                      height: hp('3'),
+                      width: wp('5'),
+                      height: hp('2.5'),
                       resizeMode: 'cover',
                     }}
                   />
@@ -251,7 +280,8 @@ const SignUp = () => {
 
                 <View
                   style={{
-                    flex: 0.13,
+                    height: hp('5'),
+                    width: wp('10'),
                     backgroundColor: Colors.white,
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -276,8 +306,7 @@ const SignUp = () => {
                 </View>
                 <View
                   style={{
-                    flex: 0.31,
-                    backgroundColor: 'white',
+                    flex: 0.57,
                     justifyContent: 'center',
                     alignItems: 'center',
                     borderRadius: wp('2'),
@@ -285,7 +314,7 @@ const SignUp = () => {
                 ></View>
 
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('HomeScreen')}
+                  onPress={onPressLoginBtn}
                   style={{
                     flex: 0.32,
                     justifyContent: 'center',
@@ -326,7 +355,7 @@ export default SignUp;
 const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
-    borderColor:Colors.naviBlue,
+    borderColor: Colors.naviBlue,
     borderRadius: wp('2.5%'),
     paddingHorizontal: wp('4%'),
     paddingVertical: hp('1.5%'),

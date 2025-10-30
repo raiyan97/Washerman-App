@@ -15,6 +15,7 @@ import Colors from '../../Styles/Colors';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 const ModalOrders = ({ modalVisible, onPressCross, text }) => {
+  // const [showLaundryModal, setShowLaundryModal] = useState(false);
   return (
     <Modal
       animationType="fade"

@@ -13,7 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 const OrderConfirmScreen = () => {
   const navigation = useNavigation();
   return (
-    <SafeAreaView style={{backgroundColor:Colors.white}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: Colors.white }}>
       <StatusBar
         barStyle="dark-content" // dark text for light backgrounds
         translucent
@@ -109,9 +109,7 @@ const OrderConfirmScreen = () => {
           >
             Order Placed Successfully!
           </Text>
-          <View
-            style={{ flex: 0.8, marginTop: hp('1.2') }}
-          >
+          <View style={{ flex: 0.8, marginTop: hp('1.2') }}>
             <Text
               style={{
                 fontSize: wp('3.2'),
@@ -124,42 +122,27 @@ const OrderConfirmScreen = () => {
               You can track your order number{' '}
               <Text style={{ color: Colors.naviBlue }}>#8989</Text>
             </Text>
-            <View style={{flex:0.2,}}></View>
-          </View>
-        </View>
-
-        <View style={{ height: hp('25'), flexDirection: 'row' }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignSelf: 'flex-end',
-            }}
-          >
-            <CommonButton
-              text="Continue Service"
-              onPress={() => navigation.navigate('OrderActiveScreen')}
-            />
-            <CommonButton
-              text="Track Order"
-              onPress={() => navigation.navigate('')}
-            />
+            <View style={{ flex: 0.2 }}></View>
           </View>
         </View>
       </ScrollView>
+
+      <View
+        style={{
+          flexDirection: 'row',
+        }}
+      >
+        <CommonButton
+          text="Continue Service"
+          onPress={() => navigation.navigate('OrderActiveScreen')}
+        />
+        <CommonButton
+          text="Track Order"
+          onPress={() => navigation.navigate('')}
+        />
+      </View>
     </SafeAreaView>
   );
 };
 
 export default OrderConfirmScreen;
-
-{
-  /* <View
-            style={{
-              flex: 0.22,
-              backgroundColor: 'white',
-              flexDirection: 'row',
-            }}
-          >
-          
-          </View> */
-}
